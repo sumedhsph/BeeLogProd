@@ -19,7 +19,7 @@ function Header() {
       }}
     >
       <div className="container max-w-4xl mx-auto pt-4 md:pt-10 text-center break-normal mb-10">
-        <Link to="/" className="text-white font-extrabold text-3xl md:text-5xl flex justify-center">
+        <Link to="/" className="text-white font-extrabold text-2xl md:text-5xl flex justify-center">
           <img src={logo} alt="BeeLog" /> <span> BeeLog</span>
         </Link>
         <p className="text-xl md:text-2xl text-gray-500">Welcome to my Blog</p>

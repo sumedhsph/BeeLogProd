@@ -17,7 +17,7 @@ function ThreePosts() {
       //const latest = allPosts.slice(0,3); //display only 3 latest articles
 
       const sortPosts = allPosts.sort(
-        (a, b) => new Date(b.$updatedAt) - new Date(a.$updatedAt)
+        (a, b) => new Date(b.$createdAt) - new Date(a.$createdAt)
       );
       //show only 3 post
       setLatestPosts(sortPosts.slice(0, 3));

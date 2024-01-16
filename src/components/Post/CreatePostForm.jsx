@@ -102,12 +102,12 @@ function CreatePostForm() {
         <div className="relative">
           <button
             type="submit"
-            className="bg-blue-500 text-white rounded-md px-8 py-2 hover:bg-indigo-900"
+            className="bg-blue-500 text-white rounded-md px-8 py-2 hover:bg-indigo-900 mr-10"
           >
             POST
           </button>
           <button
-            className="bg-gray-500 ml-10  text-white rounded-md px-8 py-2 hover:bg-gray-900"
+            className="bg-gray-500   text-white rounded-md px-8 py-2 hover:bg-gray-900"
             onClick={resetForm}
           >
             Reset
