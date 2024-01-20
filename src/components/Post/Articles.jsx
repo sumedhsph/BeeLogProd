@@ -4,9 +4,11 @@ import { useBlogContext } from "../../context/BlogContext";
 import SimpleHeader from "../Header/SimpleHeader";
 import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
+import Input from "../Input";
 function Articles() {
   const [allArticles, setAllArticles] = useState();
   const { allPosts, getAllPostsFun, setPostAdded } = useBlogContext();
+  const [keyoword, setKeyword] = useState("");
   //console.log(allPosts[0]);
 
   useEffect(() => {
@@ -15,6 +17,20 @@ function Articles() {
     window.scrollTo(0, 0);
     setPostAdded(true);
   }, []);
+
+  const handleSearch = (e) => {
+    const searchText = e.target.value;
+    setKeyword(searchText)
+
+    if (searchText === "") {
+      setAllArticles(allPosts);
+    }
+    //filter data on title
+    const filteredArticles = allPosts.filter((item) =>
+      item.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setAllArticles(filteredArticles);
+  };
   return (
     <>
       <SimpleHeader />
@@ -22,6 +38,16 @@ function Articles() {
         <div className="pt-12 -mx-6">
           <div className="px-6 text-center">
             <h2 className="text-2xl font-semibold">Articles</h2>
+          </div>
+          <div className="w-52 ml-6 m-4">
+            <Input
+              type="text"
+              name="search"
+              value={keyoword}
+              placeholder="Search articles"
+              onChange={handleSearch}
+              className="px-2"
+            />
           </div>
           <div className="flex flex-wrap">
             {allArticles &&
