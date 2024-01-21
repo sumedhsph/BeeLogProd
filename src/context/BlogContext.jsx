@@ -16,6 +16,8 @@ export const BlogProvider = ({ children }) => {
   const [postSuccess, setPostSuccess] = useState(false);
   const [allArticles, setAllArticles] = useState([]);
   const [postAdded, setPostAdded] = useState(null);
+  //custom select values
+  const [selectedOption, setSelectedOption] = useState(null);
   //console.log(conf.appwriteBucketId)
 
   const { user, reset, setValue } = useAuthContext();
@@ -208,21 +210,24 @@ export const BlogProvider = ({ children }) => {
     setLoading(false);
   };
 
-
-  const deleteUserPost = async(data)=>{
-      setLoading(true)
-      //console.log(data.postId)
-      //return
-      try {
-          let doc = await databases.deleteDocument(conf.appwriteDatabaseId,conf.appwriteCollectionId, data.postId);
-          let img = await storage.deleteFile(conf.appwriteBucketId,  data.imageId)
-      } catch (error) {
-          console.log(error);
-      }
-      setLoading(false)
-      setPostAdded(!postAdded)
-      toast.success("Article deleted");
-  }
+  const deleteUserPost = async (data) => {
+    setLoading(true);
+    //console.log(data.postId)
+    //return
+    try {
+      let doc = await databases.deleteDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        data.postId
+      );
+      let img = await storage.deleteFile(conf.appwriteBucketId, data.imageId);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+    setPostAdded(!postAdded);
+    toast.success("Article deleted");
+  };
   //values
   const values = {
     getPost,
@@ -242,7 +247,9 @@ export const BlogProvider = ({ children }) => {
     updateTitle,
     updateContent,
     updateImage,
-    deleteUserPost
+    deleteUserPost,
+    selectedOption,
+    setSelectedOption
   };
 
   return <BlogContext.Provider value={values}>{children}</BlogContext.Provider>;

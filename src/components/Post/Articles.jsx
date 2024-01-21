@@ -5,9 +5,18 @@ import SimpleHeader from "../Header/SimpleHeader";
 import { Link } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Input from "../Input";
+import useDebouncing from "../customHooks/useDebouncing";
+import CustomSelect from "../CustomSelect";
+
 function Articles() {
   const [allArticles, setAllArticles] = useState();
-  const { allPosts, getAllPostsFun, setPostAdded } = useBlogContext();
+  const {
+    allPosts,
+    getAllPostsFun,
+    setPostAdded,
+    selectedOption,
+    setSelectedOption
+  } = useBlogContext();
   const [keyoword, setKeyword] = useState("");
   //console.log(allPosts[0]);
 
@@ -18,18 +27,55 @@ function Articles() {
     setPostAdded(true);
   }, []);
 
-  const handleSearch = (e) => {
-    const searchText = e.target.value;
-    setKeyword(searchText)
+  //sorting using custom select
 
-    if (searchText === "") {
+  const handleSorting = () => {
+    if (selectedOption) {
+      //console.log(selectedOption);
+     // console.log(allPosts);
+      if (selectedOption === "title") {
+       // console.log(selectedOption);
+        const sortedArticles = [...allPosts].sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+        setAllArticles(sortedArticles);
+      } else if (selectedOption === "latest") {
+        const sortedArticles = [...allPosts].sort((a, b) =>
+          b.$createdAt.localeCompare(a.$createdAt)
+        );
+        setAllArticles(sortedArticles);
+      }
+      else if (selectedOption === "updated") {
+        const sortedArticles = [...allPosts].sort((a, b) =>
+          b.$updatedAt.localeCompare(a.$updatedAt)
+        );
+        setAllArticles(sortedArticles);
+      }
+    }
+  };
+  useEffect(() => {
+    handleSorting();
+  }, [selectedOption]);
+  //debouncing search
+  const debouncedHandleSearch = useDebouncing((searchQuery) => {
+    //setKeyword(searchText);
+    //console.log("first");
+    if (searchQuery === "") {
       setAllArticles(allPosts);
     }
+
     //filter data on title
+
     const filteredArticles = allPosts.filter((item) =>
-      item.title.toLowerCase().includes(searchText.toLowerCase())
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setAllArticles(filteredArticles);
+  }, 1000);
+
+  const handleSearch = (e) => {
+    const searchText = e.target.value;
+    setKeyword(searchText);
+    debouncedHandleSearch(searchText);
   };
   return (
     <>
@@ -39,14 +85,19 @@ function Articles() {
           <div className="px-6 text-center">
             <h2 className="text-2xl font-semibold">Articles</h2>
           </div>
-          <div className="w-52 ml-6 m-4">
+          <div className="w-full px-6 flex">
             <Input
               type="text"
               name="search"
               value={keyoword}
               placeholder="Search articles"
               onChange={handleSearch}
-              className="px-2"
+              className="px-2 w-60"
+            />
+            SortBy:{" "}
+            <CustomSelect
+              options={["title", "latest", "updated"]}
+              selectWidth={"w-40"}
             />
           </div>
           <div className="flex flex-wrap">
