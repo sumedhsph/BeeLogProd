@@ -92,7 +92,7 @@ function Articles() {
               value={keyoword}
               placeholder="Search articles"
               onChange={handleSearch}
-              className="px-2 w-60"
+              className="px-2 w-60 max-w-60"
             />
             SortBy:{" "}
             <CustomSelect
